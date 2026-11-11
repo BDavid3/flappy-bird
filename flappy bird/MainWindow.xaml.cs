@@ -129,6 +129,5 @@ namespace flappy_bird
             }
             return false;
         }
-
     }
 }
