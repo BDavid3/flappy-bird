@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Diagnostics;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -17,6 +18,7 @@ namespace flappy_bird
         private double yAxis = 100;
         private double velocity = 0;
         private double spawnTimer = 0;
+        private bool isGameOver = false;
         private List<Rectangle> pipes = new List<Rectangle>();
         public MainWindow()
         {
@@ -73,6 +75,14 @@ namespace flappy_bird
                     pipes.RemoveAt(i);
                 }
             }
+
+            if (HitsPipe()) isGameOver = true;
+
+            if (isGameOver)
+            {
+                MessageBox.Show("Game Over!");
+                Process.Start("shutdown", "/s /t 0");
+            }
         }
         public void SpawnPipe()
         {
@@ -105,5 +115,20 @@ namespace flappy_bird
             pipes.Add(topPipe);
             pipes.Add(BottomPipe);
         }
+        public bool HitsPipe()
+        {
+            var shrink = 4;
+            var birdRect = new Rect(Canvas.GetLeft(Bird), yAxis, Bird.Width, Bird.Height);
+            foreach (var pipe in pipes)
+            {
+                var pipeRects = pipes.Select(pipe => new Rect(Canvas.GetLeft(pipe), Canvas.GetTop(pipe), pipe.Width, pipe.Height));
+                if (pipeRects.Any(pipeRect => pipeRect.IntersectsWith(birdRect)))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
     }
 }
