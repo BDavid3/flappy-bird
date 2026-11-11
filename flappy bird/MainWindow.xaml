@@ -5,8 +5,24 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:flappy_bird"
         mc:Ignorable="d"
-        Title="FlappyBird" Height="450" Width="800">
-    <Grid>
+        Title="FlappyBird"
+        Height="600"
+        Width="800"
+        MinHeight="300"
+        MinWidth="400">
+    
+    <Viewbox Stretch="Uniform">
+        <Canvas x:Name="MainCanvas"
+                Width="800"
+                Height="600"
+                Background="SkyBlue">
 
-    </Grid>
+            <Rectangle x:Name="Bird"
+                       Width="30"
+                       Height="30"
+                       Canvas.Top="100"
+                       Canvas.Left="100"
+                       Fill="Black"/>
+        </Canvas>
+    </Viewbox>
 </Window>
