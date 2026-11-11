@@ -118,7 +118,7 @@ namespace flappy_bird
         public bool HitsPipe()
         {
             var shrink = 4;
-            var birdRect = new Rect(Canvas.GetLeft(Bird), yAxis, Bird.Width, Bird.Height);
+            var birdRect = new Rect(Canvas.GetLeft(Bird) + shrink, yAxis + shrink, Bird.Width -shrink*2, Bird.Height -shrink*2);
             foreach (var pipe in pipes)
             {
                 var pipeRects = pipes.Select(pipe => new Rect(Canvas.GetLeft(pipe), Canvas.GetTop(pipe), pipe.Width, pipe.Height));
