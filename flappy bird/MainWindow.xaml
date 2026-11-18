@@ -14,9 +14,10 @@
         <Canvas x:Name="MainCanvas"
                 Width="800"
                 Height="600">
-
+            
             <Canvas.Background>
-                <SolidColorBrush Color="SkyBlue"/>
+                <ImageBrush ImageSource="/Images/Background.jpeg"
+                            Stretch="UniformToFill"/>
             </Canvas.Background>
 
             <Rectangle x:Name="Bird"
@@ -24,8 +25,11 @@
                        Width="30"
                        Height="30"
                        Canvas.Top="100"
-                       Canvas.Left="100"
-                       Fill="Black"/>
+                       Canvas.Left="100">
+                <Rectangle.Fill>
+                    <ImageBrush ImageSource="/Images/Bird.jfif"/>
+                </Rectangle.Fill>
+            </Rectangle>    
             <TextBox x:Name="txtBox"
                      Panel.ZIndex="1"
                      Canvas.Left="600"

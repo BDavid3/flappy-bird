@@ -8,6 +8,24 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Images\Background.jpeg" />
+    <None Remove="Images\Bird.jfif" />
+    <None Remove="Images\Pipe.jpeg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\Background.jpeg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Bird.jfif">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Pipe.jpeg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
 	
 	
 </Project>

