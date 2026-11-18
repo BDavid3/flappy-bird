@@ -16,16 +16,31 @@
                 Height="600">
 
             <Canvas.Background>
-                <ImageBrush ImageSource="C:\Users\BalázsDávid\source\repos\flappy bird\flappy bird\f24.jfif"
-                Stretch="Fill"/>
+                <SolidColorBrush Color="SkyBlue"/>
             </Canvas.Background>
 
             <Rectangle x:Name="Bird"
+                       Panel.ZIndex="0"
                        Width="30"
                        Height="30"
                        Canvas.Top="100"
                        Canvas.Left="100"
                        Fill="Black"/>
+            <TextBox x:Name="txtBox"
+                     Panel.ZIndex="1"
+                     Canvas.Left="600"
+                     TextWrapping="Wrap"
+                     Text="Score: 0"
+                     Canvas.Top="10"
+                     Width="150"
+                     HorizontalAlignment="Left"
+                     Height="50"
+                     VerticalAlignment="Center"
+                     Foreground="Black"
+                     Background="Transparent"
+                     FontWeight="Bold"
+                     TextAlignment="Center"
+                     FontSize="20"/>
         </Canvas>
     </Viewbox>
 </Window>

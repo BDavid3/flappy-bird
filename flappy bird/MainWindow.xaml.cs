@@ -18,7 +18,9 @@ namespace flappy_bird
         private double yAxis = 100;
         private double velocity = 0;
         private double spawnTimer = 0;
+        private int counter = 0;
         private bool isGameOver = false;
+        private bool HasScored = false;
         private List<Rectangle> pipes = new List<Rectangle>();
         public MainWindow()
         {
@@ -76,12 +78,44 @@ namespace flappy_bird
                 }
             }
 
-            if (HitsPipe()) isGameOver = true;
+            if (HitsPipe())
+                isGameOver = true;
 
             if (isGameOver)
             {
                 MessageBox.Show("Game Over!");
-                Process.Start("shutdown", "/s /t 0");
+
+                // Reset Game
+
+                for (int i = 0; i < pipes.Count(); i++)
+                {
+                    var chosenPipe = pipes[i];
+                    MainCanvas.Children.Remove(chosenPipe);
+                }
+
+                pipes.Clear();
+
+                velocity = 0;
+                yAxis = 100;
+                spawnTimer = 0;
+                counter = 0;
+                txtBox.Text = "Score: 0";
+
+                Canvas.SetTop(Bird, yAxis);
+                isGameOver = false;
+
+            }
+
+            // Counter 
+            if (pipes.Count > 0)
+            {
+                var pipe = pipes[0];
+                if (Canvas.GetLeft(pipe) + Bird.Width < Canvas.GetLeft(Bird) && HasScored == false)
+                {
+                    counter++;
+                    txtBox.Text = $"Score: {counter}";
+                    HasScored = true;
+                }
             }
         }
         public void SpawnPipe()
@@ -114,6 +148,11 @@ namespace flappy_bird
 
             pipes.Add(topPipe);
             pipes.Add(BottomPipe);
+
+            Panel.SetZIndex(topPipe, 0);
+            Panel.SetZIndex(BottomPipe, 0);
+
+            HasScored = false;
         }
         public bool HitsPipe()
         {
