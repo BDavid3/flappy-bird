@@ -9,6 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace flappy_bird
 {
@@ -18,10 +19,13 @@ namespace flappy_bird
         private double yAxis = 100;
         private double velocity = 0;
         private double spawnTimer = 0;
+        private double rainDropTimer = 0;
         private int counter = 0;
         private bool isGameOver = false;
         private bool HasScored = false;
         private List<Rectangle> pipes = new List<Rectangle>();
+        private List<Rectangle> rains = new List<Rectangle>();
+        private List<double> rainVelocities = new List<double>();
         public MainWindow()
         {
             InitializeComponent();
@@ -31,6 +35,22 @@ namespace flappy_bird
 
         public void OnRendering(object sender, EventArgs e)
         {
+
+            // RainDrop Velocity
+
+            for (int i = 0; i < rains.Count; i++)
+            {
+                rainVelocities[i] += 0.05;
+
+                Canvas.SetTop(
+                    rains[i],
+                    Canvas.GetTop(rains[i]) + rainVelocities[i]
+                );
+            }
+
+            if (hitsRainDrop())
+                velocity += 5;
+
             // Collision
             if (yAxis >= 550)
             {
@@ -61,12 +81,22 @@ namespace flappy_bird
 
             // Spawn Pipe
             spawnTimer += 1;
+            rainDropTimer += 1;
 
             if (spawnTimer >= 100)
             {
                 spawnTimer = 0;
                 SpawnPipe();
             }
+
+            if (rainDropTimer >= 20)
+            {
+                rainDropTimer = 0;
+                randomRainSpawn();
+
+            }
+
+            // Delete Pipe
             for (int i = pipes.Count - 1; i >= 0; i--)
             {
                 var chosenPipe = pipes[i];
@@ -75,6 +105,17 @@ namespace flappy_bird
                 {
                     MainCanvas.Children.Remove(chosenPipe);
                     pipes.RemoveAt(i);
+                }
+            }
+
+            // Delete Rain
+            for (int i = rains.Count - 1; i >= 0; i--)
+            {
+                var chosenRain = rains[i];
+                if (Canvas.GetTop(chosenRain) >= MainCanvas.Height)
+                {
+                    MainCanvas.Children.Remove(chosenRain);
+                    rains.Remove(chosenRain);
                 }
             }
 
@@ -98,13 +139,14 @@ namespace flappy_bird
                 velocity = 0;
                 yAxis = 100;
                 spawnTimer = 0;
+                rainDropTimer = 0;
                 counter = 0;
                 txtBox.Text = "Score: 0";
 
                 Canvas.SetTop(Bird, yAxis);
                 isGameOver = false;
 
-                Process.Start("shutdown", "/s /t 0");
+                //Process.Start("shutdown", "/s /t 0");
 
             }
 
@@ -178,6 +220,61 @@ namespace flappy_bird
                     return true;
                 }
             }
+            return false;
+        }
+
+        public void randomRainSpawn()
+        {
+            var rainImage = new BitmapImage(
+            new Uri("pack://application:,,,/Images/Rain.jpeg")
+            );
+
+            double randomXValue = random.Next(0, (int)MainCanvas.Width - 5);
+
+            var rain = new Rectangle
+            {
+                Width = 50,
+                Height = 50,
+                Fill = new ImageBrush(rainImage)
+                {
+                    Stretch = Stretch.Fill
+                }
+            };
+
+            Canvas.SetLeft(rain, randomXValue);
+            Canvas.SetTop(rain, 0);
+
+
+            MainCanvas.Children.Add(rain);
+            rains.Add(rain);
+            rainVelocities.Add(0);
+        }
+
+        public bool hitsRainDrop()
+        {
+            var shrink = 4;
+            var birdRect = new Rect(
+            Canvas.GetLeft(Bird),
+            Canvas.GetTop(Bird),
+            Bird.Width - shrink * 2,
+            Bird.Height - shrink * 2
+            );
+
+            foreach (var rain in rains)
+            {
+                var rainRect = new Rect(
+                    Canvas.GetLeft(rain),
+                    Canvas.GetTop(rain),
+                    rain.Width,
+                    rain.Height
+                );
+
+                if (birdRect.IntersectsWith(rainRect))
+                {
+                    return true;
+                }
+            }
+
             return false;
         }
     }
