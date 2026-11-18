@@ -134,7 +134,15 @@ namespace flappy_bird
                     MainCanvas.Children.Remove(chosenPipe);
                 }
 
+                for (int i = 0; i < rains.Count(); i++)
+                {
+                    var chosenRain = rains[i];
+                    MainCanvas.Children.Remove(chosenRain);
+                }
+
                 pipes.Clear();
+                rains.Clear();
+                rainVelocities.Clear();
 
                 velocity = 0;
                 yAxis = 100;
